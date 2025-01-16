@@ -1,5 +1,7 @@
 const express = require('express');
 
+const db = require('./utils/db');
+
 const app = express();
 
 app.use('/public', express.static('public'));
@@ -10,8 +12,6 @@ app.use((req, res, next) => {
 });
 
 app.set('view engine', 'ejs');
-
-const db = require('./utils/db');
 
 app.get('/', (req, res) => {
     db.query('SELECT * FROM products', (error, result) => {
