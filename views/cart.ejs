@@ -16,13 +16,12 @@
             </div>
 
             <div class="col-12">
-                <table class="table table-dark">
+                <table class="table table-dark table-striped table-hover rounded">
                     <thead>
                         <tr>
-                            <th scope="col">Product</th>
-                            <th scope="col">Price</th>
+                            <th scope="col">Title</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Total</th>
+                            <th scope="col">Total Price</th>
                         </tr>
                     </thead>
                     <tbody class="table-body">
@@ -42,9 +41,8 @@
         document.querySelector('.table-body').innerHTML += `
             <tr>
                 <td>${item.title}</td>
-                <td>${item.price}</td>
                 <td>${item.quantity}x</td>
-                <td>Total</td>
+                <td>${item.quantity * item.price}</td>
             </tr>
         `;
     });
