@@ -44,7 +44,7 @@
                         <div class="card-body">
                             <h5 class="card-title"><%= product.title %></h5>
                             <p class="card-text"><%= product.description %></p>
-                            <p class="card-text"><strong>Hind: </strong><%= product.price %></p>
+                            <p class="card-text"><strong>Hind: </strong><%= product.price %> €</p>
 
                             <% if (isAdmin) { %>
                                 <a href="/edit-product/<%= product.id %>" class="btn btn-warning">Edit</a>
