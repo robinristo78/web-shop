@@ -30,12 +30,32 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="col-4">
+
+            </div>
+
+            <div class="col-4 bg-dark rounded text-center text-white">
+                <p id="total-rice" class="fs-4 m-0 my-2 "></p>
+
+                <button class="btn btn-success fs-2 p-3 mb-2" onclick="BUY()">Osta Ära!! 🤩🤩🤩</button>
+            </div>
+
+            <div class="col-4">
+
+            </div>
         </div>
     </div>
 
 </body>
 
 <script>
+    function BUY() {
+        alert('Tänan ostu eest! Cash-Moneyyy 💸💸💸💸');
+        localStorage.setItem('cart', JSON.stringify([]));
+        location.assign('/');
+    }
+
     function DeleteItemFromCart(index) {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         cart.splice(index, 1);
@@ -64,5 +84,8 @@
             </tr>
         `;
     });
+
+    const totalPrice = groupedCart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    document.getElementById('total-rice').innerText = `Total Price: ${totalPrice} €`;
 </script>
 </html>
