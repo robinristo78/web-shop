@@ -1,0 +1,9 @@
+.card {
+    width: 50px;
+    padding: 25px 10px 25px 10px !important;
+} 
+
+.navbar-nav .nav-item.active a {
+    background-color: #212224; 
+    color: white;
+}
