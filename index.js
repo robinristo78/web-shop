@@ -1,15 +1,10 @@
-const express = require('express');
+const app = require('./utils/app');
 
-const db = require('./utils/db');
+const shopRoutes = require('./routes/shop');
+const cartRoutes = require('./routes/cart');
+const productRoutes = require('./routes/product');
 
-const app = express();
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use('/public', express.static('public'));
-
-app.set('view engine', 'ejs');
+app.use('/', shopRoutes);
 
 function getProducts(callback) {
     db.query('SELECT * FROM products', (error, result) => {
@@ -28,15 +23,6 @@ function getProducts(callback) {
     });
 }
 
-app.get('/', (req, res) => {
-    getProducts((products) => {
-        res.render('shop/index', {
-            products: products,
-            isAdmin: false
-        });
-    });
-});
-
 app.get('/admin', (req, res) => {
     getProducts((products) => {
         res.render('shop/index', {
@@ -46,9 +32,6 @@ app.get('/admin', (req, res) => {
     });
 });
 
-app.get('/cart', (req, res) => {
-    res.render('shop/cart');
-});
 
 app.get('/add-product', (req, res) => {
     res.render('shop/add-product');
@@ -113,19 +96,11 @@ app.get('/edit-product/:id', (req, res) => {
     });
 });
 
-app.get('/product/:id', (req, res) => {
-    const id = req.params.id;
 
-    db.query('SELECT * FROM products WHERE id = ?', [id], (error, result) => {
-        if(error) {
-            console.log(error);
-            return;
-        }
-        res.render('shop/product', {
-            product: result[0]
-        });
-    });
-});
+app.use('/', cartRoutes);
+
+app.use('/', productRoutes);
+
 
 app.listen(3033, () => {
     console.log('server is connected at http://localhost:3033/');
