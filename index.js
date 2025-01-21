@@ -1,47 +1,14 @@
-const express = require('express');
+const app = require('./utils/app');
 
-const db = require('./utils/db');
+const shopRoutes = require('./routes/shop');
+const cartRoutes = require('./routes/cart');
+const productRoutes = require('./routes/product');
 
-const app = express();
+app.use('/', shopRoutes);
 
-app.use('/public', express.static('public'));
+app.use('/', cartRoutes);
 
-app.use((req, res, next) => {
-    console.log('Middleware 1');
-    next();
-});
-
-app.set('view engine', 'ejs');
-
-app.get('/', (req, res) => {
-    db.query('SELECT * FROM products', (error, result) => {
-        if(error) {
-            console.log(error);
-            return;
-        }
-        res.render('shop/index', {
-            products: result
-        });
-    });
-});
-
-app.get('/cart', (req, res) => {
-    res.render('shop/cart');
-});
-
-app.get('/product/:id', (req, res) => {
-    const id = req.params.id;
-
-    db.query('SELECT * FROM products WHERE id = ?', [id], (error, result) => {
-        if(error) {
-            console.log(error);
-            return;
-        }
-        res.render('shop/product', {
-            product: result[0]
-        });
-    });
-});
+app.use('/', productRoutes);
 
 app.listen(3033, () => {
     console.log('server is connected at localhost:3033');
