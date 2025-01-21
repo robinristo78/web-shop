@@ -10,6 +10,19 @@
 
 <body id="top">
     
+    <!-- 
+        This code represents a navigation bar for a web shop using Bootstrap classes.
+        - The navigation bar is dark-themed (`navbar-dark bg-dark`) and expands on large screens (`navbar-expand-lg`).
+        - It contains a brand link with the text "E-Pood".
+        - A button is provided to toggle the navigation bar on smaller screens.
+        - The navigation links are wrapped in a collapsible container (`collapse navbar-collapse`).
+        - The navigation links include:
+            - "Products" link, which is active when the user is not an admin.
+            - "Cart" link.
+            - "Add Product" link, which is only visible to admin users.
+            - "Admin" link, which is active when the user is an admin.
+        - The `isAdmin` variable is used to conditionally render and style the links based on the user's admin status.
+    -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">E-Pood</a>
@@ -38,6 +51,22 @@
         </div>
     </nav>
 
+    <!-- 
+
+    This file is an EJS template for rendering the shop's main page. It displays a list of products in a grid layout. Each product is shown within a card that includes an image, title, description, and price. 
+
+    Features:
+    - If the user is an admin (`isAdmin` is true), they can see "Edit" and "Delete" buttons for each product.
+    - If the user is not an admin, they can see a "View Product" button and an "Add to Cart" button.
+    - The "Add to Cart" button triggers a JavaScript function `addToCart` which adds the product to the local storage cart and displays an alert.
+
+    JavaScript:
+    - The `addToCart` function adds the selected product to the cart stored in local storage.
+    - The cart is initialized as an empty array in local storage.
+
+    Additional:
+    - A link with a GIF image is provided at the bottom of the page to scroll back to the top.
+    -->
     <div class="container-fluid">
         <div class="row">
             <% products.forEach(function(product) { %>
