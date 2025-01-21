@@ -43,8 +43,16 @@
                             <h5 class="card-title"><%= product.title %></h5>
                             <p class="card-text"><%= product.description %></p>
                             <p class="card-text"><strong>Hind: </strong><%= product.price %></p>
-                            <a href="/product/<%= product.id %>" class="btn btn-primary">View Product</a>
-                            <button class="btn btn-success" onclick="addToCart('<%= product.id %>', '<%= product.title %>', '<%= product.price %>')">Add to Cart</button>
+
+                            <% if (isAdmin) { %>
+                                <a href="/edit-product/<%= product.id %>" class="btn btn-warning">Edit</a>
+                                <form action="/delete-product/<%= product.id %>" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            <% } else { %>
+                                <a href="/product/<%= product.id %>" class="btn btn-primary">View Product</a>
+                                <button class="btn btn-success" onclick="addToCart('<%= product.id %>', '<%= product.title %>', '<%= product.price %>')">Add to Cart</button>
+                            <% } %>
 
                             <script>
                                 localStorage.setItem('cart', JSON.stringify([]));
