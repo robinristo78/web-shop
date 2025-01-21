@@ -16,13 +16,13 @@
             </div>
 
             <div class="col-12">
-                <table class="table table-dark">
+                <table class="table table-dark table-striped table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">Product</th>
-                            <th scope="col">Price</th>
+                            <th scope="col">Title</th>
                             <th scope="col">Quantity</th>
-                            <th scope="col">Total</th>
+                            <th scope="col">Total Price</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody class="table-body">
@@ -30,23 +30,62 @@
                     </tbody>
                 </table>
             </div>
+
+            <div class="col-4">
+
+            </div>
+
+            <div class="col-4 bg-dark rounded text-center text-white">
+                <p id="total-rice" class="fs-4 m-0 my-2 "></p>
+
+                <button class="btn btn-success fs-2 p-3 mb-2" onclick="BUY()">Osta Ära!! 🤩🤩🤩</button>
+            </div>
+
+            <div class="col-4">
+
+            </div>
         </div>
     </div>
 
 </body>
 
 <script>
+    function BUY() {
+        alert('Tänan ostu eest! Cash-Moneyyy 💸💸💸💸');
+        localStorage.setItem('cart', JSON.stringify([]));
+        location.assign('/');
+    }
+
+    function DeleteItemFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload();
+    }
+
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    console.log(cart);
-    cart.forEach(function(item) {
+    const groupedCart = cart.reduce((acc, item) => {
+        const existingItem = acc.find(i => i.title === item.title);
+        if (existingItem) {
+            existingItem.quantity += item.quantity;
+        } else {
+            acc.push({ ...item });
+        }
+        return acc;
+    }, []);
+
+    groupedCart.forEach(function(item, index) {
         document.querySelector('.table-body').innerHTML += `
             <tr>
                 <td>${item.title}</td>
-                <td>${item.price}</td>
                 <td>${item.quantity}x</td>
-                <td>Total</td>
+                <td>${item.quantity * item.price}</td>
+                <td><button class="btn btn-danger text-center" onclick="DeleteItemFromCart(${index})">Kustuta</button></td>
             </tr>
         `;
     });
+
+    const totalPrice = groupedCart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    document.getElementById('total-rice').innerText = `Total Price: ${totalPrice} €`;
 </script>
 </html>
