@@ -1,41 +1,22 @@
-const app = require('./utils/app');
+const express = require('express');
 
-const shopRoutes = require('./routes/shop');
-const cartRoutes = require('./routes/cart');
-const productRoutes = require('./routes/product');
+const db = require('./utils/db');
 
-app.use('/', shopRoutes);
+const app = express();
 
-function getProducts(callback) {
-    db.query('SELECT * FROM products', (error, result) => {
-        if(error) {
-            console.log(error);
-            return;
-        }
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-        result.forEach(product => {
-            if (!product.imageUrl) {
-                product.imageUrl = 'public/images/placeholder.jpg';
-            }
-        });
+app.use('/public', express.static('public'));
 
-        callback(result);
-    });
-}
-
-app.get('/admin', (req, res) => {
-    getProducts((products) => {
-        res.render('shop/index', {
-            products: products,
-            isAdmin: true
-        });
-    });
-});
-
+app.set('view engine', 'ejs');
 
 app.get('/add-product', (req, res) => {
     res.render('shop/add-product');
 });
+
+app.use('/', require('./routes/shop'));
+app.use('/', require('./routes/cart'));
 
 app.post('/add-product', (req, res) => {
     const name = req.body.title;
@@ -96,11 +77,19 @@ app.get('/edit-product/:id', (req, res) => {
     });
 });
 
+app.get('/product/:id', (req, res) => {
+    const id = req.params.id;
 
-app.use('/', cartRoutes);
-
-app.use('/', productRoutes);
-
+    db.query('SELECT * FROM products WHERE id = ?', [id], (error, result) => {
+        if(error) {
+            console.log(error);
+            return;
+        }
+        res.render('shop/product', {
+            product: result[0]
+        });
+    });
+});
 
 app.listen(3033, () => {
     console.log('server is connected at http://localhost:3033/');
