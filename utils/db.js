@@ -10,9 +10,6 @@ const connection = mysql.createConnection({
 connection.connect((err) => {
     if(err) throw err;
     console.log('MySQL server is connected');
-    connection.query('select * from products;', (error, results, fields) => {
-        console.log(results);
-    });
 });
 
 module.exports = connection;
