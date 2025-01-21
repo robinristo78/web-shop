@@ -16,12 +16,13 @@
             </div>
 
             <div class="col-12">
-                <table class="table table-dark table-striped table-hover rounded">
+                <table class="table table-dark table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col">Quantity</th>
                             <th scope="col">Total Price</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody class="table-body">
@@ -35,14 +36,31 @@
 </body>
 
 <script>
+    function DeleteItemFromCart(index) {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        location.reload();
+    }
+
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
-    console.log(cart);
-    cart.forEach(function(item) {
+    const groupedCart = cart.reduce((acc, item) => {
+        const existingItem = acc.find(i => i.title === item.title);
+        if (existingItem) {
+            existingItem.quantity += item.quantity;
+        } else {
+            acc.push({ ...item });
+        }
+        return acc;
+    }, []);
+
+    groupedCart.forEach(function(item, index) {
         document.querySelector('.table-body').innerHTML += `
             <tr>
                 <td>${item.title}</td>
                 <td>${item.quantity}x</td>
                 <td>${item.quantity * item.price}</td>
+                <td><button class="btn btn-danger text-center" onclick="DeleteItemFromCart(${index})">Kustuta</button></td>
             </tr>
         `;
     });

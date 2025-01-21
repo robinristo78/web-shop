@@ -6,11 +6,6 @@ const app = express();
 
 app.use('/public', express.static('public'));
 
-app.use((req, res, next) => {
-    console.log('Middleware 1');
-    next();
-});
-
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -44,5 +39,5 @@ app.get('/product/:id', (req, res) => {
 });
 
 app.listen(3033, () => {
-    console.log('server is connected at localhost:3033');
+    console.log('server is connected at http://localhost:3033/');
 });
